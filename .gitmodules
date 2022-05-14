@@ -1,0 +1,3 @@
+[submodule "themes/hugo-terminal-css"]
+	path = themes/hugo-terminal-css
+	url = https://git.sr.ht/~alexisgeoffrey/hugo-terminal-css
