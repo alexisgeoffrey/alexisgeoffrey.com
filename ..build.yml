@@ -1,0 +1,27 @@
+image: alpine/edge
+oauth: pages.sr.ht/PAGES:RW
+packages:
+  - hut
+  - hugo
+environment:
+  site: alexisgeoffrey.com
+artifacts:
+  - site.tar.gz
+tasks:
+  - build: |
+      cd $site
+      hugo
+  - package: |
+      cd $site/public
+      tar -cvz . > ../../site.tar.gz
+  - upload: |
+      cd $site
+      if [ "$(git rev-parse main)" != "$(git rev-parse HEAD)" ]; then \
+        set +x
+        echo "Not on main branch, skipping upload"; \
+        set -x
+        complete-build; \
+      fi
+      cd ..
+      hut pages publish -d $site --not-found /404.html site.tar.gz
+
